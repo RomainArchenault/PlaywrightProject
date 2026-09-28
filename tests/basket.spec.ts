@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('test', async ({ page }) => {
+test('add to basket from product page', async ({ page }) => {
   await page.goto('/fr/catalogue/');
   await expect(page.locator('#top_page')).toContainText('Panier');
   await page.getByRole('link', { name: 'The Hitchhiker\'s Guide to …' }).click();
