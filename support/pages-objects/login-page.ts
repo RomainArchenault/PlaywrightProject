@@ -3,22 +3,6 @@ import { expect, Page } from '@playwright/test';
 export class LoginPage {
   constructor(private readonly page: Page) {}
 
-  async openCatalogue() {
-    await this.page.goto('/fr/catalogue/');
-  }
-
-  async openLoginForm() {
-    await this.page.getByRole('link', { name: ' Compte' }).click();
-  }
-
-  async expectSiteTitle() {
-    await expect(this.page.locator('h1')).toContainText('Simple commerce');
-  }
-
-  async expectLoginTitle() {
-    await expect(this.page.locator('h2')).toContainText('Connexion');
-  }
-
   async fillEmail(email: string) {
     await this.page.getByRole('textbox', { name: 'Adresse électronique *' }).fill(email);
   }
@@ -29,14 +13,6 @@ export class LoginPage {
 
   async submitLogin() {
     await this.page.getByRole('button', { name: 'Connexion' }).click();
-  }
-
-  async expectLoggedInAs(email: string) {
-    await expect(this.page.locator('#top_page')).toContainText(email);
-  }
-
-  async expectProductsVisible() {
-    await expect(this.page.locator('#default')).toContainText('All products');
   }
 
   async expectLoginErrorSummary() {
