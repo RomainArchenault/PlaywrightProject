@@ -1,0 +1,53 @@
+import { expect, Page } from '@playwright/test';
+
+export class LoginPage {
+  constructor(private readonly page: Page) {}
+
+  async openCatalogue() {
+    await this.page.goto('/fr/catalogue/');
+  }
+
+  async openLoginForm() {
+    await this.page.getByRole('link', { name: ' Compte' }).click();
+  }
+
+  async expectSiteTitle() {
+    await expect(this.page.locator('h1')).toContainText('Simple commerce');
+  }
+
+  async expectLoginTitle() {
+    await expect(this.page.locator('h2')).toContainText('Connexion');
+  }
+
+  async fillEmail(email: string) {
+    await this.page.getByRole('textbox', { name: 'Adresse électronique *' }).fill(email);
+  }
+
+  async fillPassword(password: string) {
+    await this.page.getByRole('textbox', { name: 'Mot de passe *' }).fill(password);
+  }
+
+  async submitLogin() {
+    await this.page.getByRole('button', { name: 'Connexion' }).click();
+  }
+
+  async expectLoggedInAs(email: string) {
+    await expect(this.page.locator('#top_page')).toContainText(email);
+  }
+
+  async expectProductsVisible() {
+    await expect(this.page.locator('#default')).toContainText('All products');
+  }
+
+  async expectLoginErrorSummary() {
+    await expect(this.page.locator('#login_form')).toContainText(
+      'Oups ! Nous avons trouvé des erreurs - veuillez vérifier les messages d\'erreur ci-dessous et réessayer',
+    );
+  }
+
+  async expectInvalidCredentialsError() {
+    await expect(this.page.locator('#login_form')).toContainText(
+      'Saisissez un nom d’utilisateur et un mot de passe valides. Remarquez que chacun de ces champs est sensible à la casse (différenciation des majuscules/minuscules).',
+    );
+  }
+}
