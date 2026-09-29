@@ -8,7 +8,7 @@ export class ProductPage {
   }
 
   async openLoginPage() {
-    await this.page.getByRole('link', { name: ' Compte' }).click();
+    await this.page.getByRole('link', { name: /Compte|Account/ }).click();
   }
 
   async expectLoggedInAs(email: string) {
@@ -16,11 +16,11 @@ export class ProductPage {
   }
 
   async expectProductsVisible() {
-    await expect(this.page.locator('#default')).toContainText('All products');
+    await expect(this.page.locator('#default')).toContainText(/All products|Tous les produits/);
   }
 
   async expectBasketVisible() {
-    await expect(this.page.locator('#top_page')).toContainText('Panier');
+    await expect(this.page.locator('#top_page')).toContainText(/Basket|Panier/);
   }
 
   async openProduct() {
@@ -28,11 +28,13 @@ export class ProductPage {
   }
 
   async addToBasket() {
-    await this.page.getByRole('button', { name: 'Ajouter au panier' }).click();
+    await this.page.getByRole('button', { name: /Add to basket|Ajouter au panier/ }).click();
   }
 
   async expectBasketCount(count: number) {
-    await expect(this.page.locator('#top_page')).toContainText(`Panier (${count})`);
+    await expect(this.page.locator('#top_page')).toContainText(
+      new RegExp(`(?:Basket|Panier)\\s*\\(${count}\\)`),
+    );
   }
 
   async expectProductInBasket() {
@@ -41,7 +43,7 @@ export class ProductPage {
 
   async expectSuccessMessage() {
     await expect(this.page.locator('#messages')).toContainText(
-      'The Hitchhiker\'s Guide to the Galaxy a été ajouté à votre panier.',
+      /The Hitchhiker's Guide to the Galaxy (a été ajouté à votre panier|has been added to your basket)\./,
     );
   }
 }

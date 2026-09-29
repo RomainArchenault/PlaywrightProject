@@ -4,15 +4,15 @@ export class LoginPage {
   constructor(private readonly page: Page) {}
 
   async fillEmail(email: string) {
-    await this.page.getByRole('textbox', { name: 'Adresse électronique *' }).fill(email);
+    await this.page.getByRole('textbox', { name: /Adresse électronique \*|Email address \*/ }).fill(email);
   }
 
   async fillPassword(password: string) {
-    await this.page.getByRole('textbox', { name: 'Mot de passe *' }).fill(password);
+    await this.page.getByRole('textbox', { name: /Mot de passe \*|Password \*/ }).fill(password);
   }
 
   async submitLogin() {
-    await this.page.getByRole('button', { name: 'Connexion' }).click();
+    await this.page.getByRole('button', { name: /Connexion|Log In/ }).click();
   }
 
   async expectLoginErrorSummary() {

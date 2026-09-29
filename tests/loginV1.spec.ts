@@ -14,7 +14,7 @@ test.describe('test_de_login', () => {});
     await page.getByRole('textbox', { name: 'Mot de passe *' }).fill('ra01@test.test');
     await page.getByRole('button', { name: 'Connexion' }).click();
     await expect(page.locator('#top_page')).toContainText('ra01@test.test');
-    await expect(page.locator('#default')).toContainText('All products');
+    await expect(page.locator('#default')).toContainText('Tous les produits');
   });
 
   test('Login_Erroné', async ({ page }) => {
