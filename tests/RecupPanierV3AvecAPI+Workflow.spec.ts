@@ -1,6 +1,6 @@
 import { test } from '../support/fixtures';
 
-test('récupérer le panier après reconnexion', async ({
+test('Récupérer le panier après reconnexion', async ({
   accountWorkflow,
   basketAPI,
   basketPage,
