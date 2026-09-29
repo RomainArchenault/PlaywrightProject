@@ -1,4 +1,5 @@
 import { test } from '../support/fixtures';
+import { shippingAddressValues } from '../support/pages-objects/shipping-address-page';
 
 test('ajouter deux produits différents dont un en double', async ({
   accountWorkflow,
@@ -50,6 +51,48 @@ test('ajouter deux produits différents dont un en double', async ({
     await productPage.expectProductsVisible();
   } finally {
     // Nettoyage du panier pour les prochains tests
+    await basketAPI.clearBasket(credentials.email, credentials.password);
+  }
+});
+
+test('shipping address : validation d\'un champ obligatoire vide', async ({
+  accountWorkflow,
+  basketAPI,
+  basketPage,
+  credentials,
+  productPage,
+  shippingAddressPage,
+}) => {
+  const requiredFields = [
+    'firstName',
+    'lastName',
+    'address',
+    'city',
+    'postalCode',
+    'country',
+  ] as const;
+
+  // Préparer le panier et se connecter
+  await productPage.openCatalogue();
+  await accountWorkflow.loginWithAPI(credentials.email, credentials.password);
+  await basketAPI.clearBasket(credentials.email, credentials.password);
+
+  try {
+    // Ajouter un produit puis ouvrir le formulaire d’adresse
+    await productPage.openCatalogue();
+    await basketPage.addProduct(1);
+    await basketPage.openFromHeader();
+    await basketPage.proceedToCheckout();
+    await shippingAddressPage.expectShippingAddressPage();
+
+    // Chaque champ obligatoire doit bloquer la validation s’il est vide
+    for (const field of requiredFields) {
+      await shippingAddressPage.fillAllFieldsExcept(field);
+      await shippingAddressPage.expectRequiredFieldError(field);
+      await shippingAddressPage.fillField(field, shippingAddressValues[field]);
+    }
+  } finally {
+    // Nettoyer pour garder le contexte propre
     await basketAPI.clearBasket(credentials.email, credentials.password);
   }
 });

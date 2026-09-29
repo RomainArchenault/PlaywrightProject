@@ -53,6 +53,12 @@ Exemple :
 - Les validations de succès/erreur doivent être décrites en méthodes explicites
 - Éviter les sélecteurs trop fragiles ou les assertions trop dépendantes du DOM interne
 
+### 6. Commentaires simples et efficaces
+- Ajouter des commentaires courts, utiles et en français
+- Expliquer le but d’un bloc sans répéter le code
+- Préférer un commentaire clair à une explication trop longue
+- Les commentaires doivent aider la lecture, pas la surcharger
+
 ## Scripts utiles
 - `npm test` : compile TypeScript, lance ESLint, puis exécute Playwright
 - `npx playwright test` : exécution directe des tests Playwright
