@@ -37,8 +37,8 @@ export const test = base.extend<Fixtures>({
   basketAPI: async ({ request }, use) => {
     await use(new BasketAPI(request));
   },
-  accountWorkflow: async ({ accountPage, loginPage }, use) => {
-    await use(new AccountWorkflow(accountPage, loginPage));
+  accountWorkflow: async ({ accountPage, loginPage, page }, use) => {
+    await use(new AccountWorkflow(accountPage, loginPage, page));
   },
   credentials: async ({ baseURL }, use) => {
     void baseURL;
