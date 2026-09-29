@@ -1,32 +1,36 @@
 import { test } from '../support/fixtures';
 
 test('récupérer le panier après reconnexion', async ({
-  accountPage,
+  accountWorkflow,
+  basketAPI,
   basketPage,
-  credentials,
-  loginPage,
   productPage,
 }) => {
+  const apiLogin = 'ra01@test.test';
+  const apiPassword = 'ra01@test.test';
+  const email = 'ra01@test.test';
+  const password = 'ra01@test.test';
+
+  //API de suppression du panier avant de lancer le test pour ne pas laisser de trace dans le panier
+  await basketAPI.clearBasket(apiLogin, apiPassword);
+
+  // Ouverture de la page catalogue
   await productPage.openCatalogue();
-  await accountPage.openLoginPage();
-  await loginPage.fillEmail(credentials.email);
-  await loginPage.fillPassword(credentials.password);
-  await loginPage.submitLogin();
 
-  // suppression de tous les produits du panier abant de lancer le test
-  await basketPage.clearExistingProducts();
+  // Se connecter
+  await accountWorkflow.login(email, password);
 
+  // Ajouter dans le panier
   await productPage.openCatalogue();
   await basketPage.addProduct(4);
   await basketPage.openFromHeader();
   await basketPage.expectBasketContents("The Hitchhiker's Guide to the Galaxy");
 
-  await accountPage.logout(credentials.email);
-  await accountPage.openLoginPage();
-  await loginPage.fillEmail(credentials.email);
-  await loginPage.fillPassword(credentials.password);
-  await loginPage.submitLogin();
+  // Deconnexion / Reconnexion
+  await accountWorkflow.logout(email);
+  await accountWorkflow.login(email, password);
 
+  // Verification de la présence du produit dans le panier
   await basketPage.expectCount(1);
   await basketPage.openFromHeader();
   await basketPage.expectBasketContents("The Hitchhiker's Guide to the Galaxy");
@@ -34,6 +38,6 @@ test('récupérer le panier après reconnexion', async ({
   // suppression du produit pour ne pas laisser de trace dans le panier
   await basketPage.removeProduct();
   await basketPage.expectEmpty();
-  await accountPage.logout(credentials.email);
+  await accountWorkflow.logout(email);
   await productPage.expectProductsVisible();
 });

@@ -4,6 +4,8 @@ import { ProductPage } from './pages-objects/product-page';
 import { TitlePage } from './pages-objects/title-page';
 import { AccountPage } from './pages-objects/account-page';
 import { BasketPage } from './pages-objects/basket-page';
+import { BasketAPI } from './pages-objects/basket-api';
+import { AccountWorkflow } from './workflows/account-workflow';
 
 type Fixtures = {
   loginPage: LoginPage;
@@ -11,6 +13,8 @@ type Fixtures = {
   titlePage: TitlePage;
   accountPage: AccountPage;
   basketPage: BasketPage;
+  basketAPI: BasketAPI;
+  accountWorkflow: AccountWorkflow;
   credentials: { email: string; password: string };
 };
 
@@ -29,6 +33,12 @@ export const test = base.extend<Fixtures>({
   },
   basketPage: async ({ page }, use) => {
     await use(new BasketPage(page));
+  },
+  basketAPI: async ({ request }, use) => {
+    await use(new BasketAPI(request));
+  },
+  accountWorkflow: async ({ accountPage, loginPage }, use) => {
+    await use(new AccountWorkflow(accountPage, loginPage));
   },
   credentials: async ({ baseURL }, use) => {
     void baseURL;
