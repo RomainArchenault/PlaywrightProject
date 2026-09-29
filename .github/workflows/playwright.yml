@@ -1,3 +1,6 @@
+#Pour intégrer les tests dans les pipelines CI/CD !
+#Penser à retirer les # de commentaires
+
 # name: Playwright Tests
 # on:
 #   push:
