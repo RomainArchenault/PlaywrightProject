@@ -5,7 +5,10 @@ import { TitlePage } from './pages-objects/title-page';
 import { AccountPage } from './pages-objects/account-page';
 import { BasketPage } from './pages-objects/basket-page';
 import { BasketAPI } from './pages-objects/basket-api';
-import { CheckoutPage } from './pages-objects/checkout-page';
+import { ShippingAddressPage } from './pages-objects/shipping-address-page';
+import { PaymentDetailsPage } from './pages-objects/payment-details-page';
+import { OrderPreviewPage } from './pages-objects/order-preview-page';
+import { OrderConfirmationPage } from './pages-objects/order-confirmation-page';
 import { AccountWorkflow } from './workflows/account-workflow';
 
 type Fixtures = {
@@ -15,7 +18,10 @@ type Fixtures = {
   accountPage: AccountPage;
   basketPage: BasketPage;
   basketAPI: BasketAPI;
-  checkoutPage: CheckoutPage;
+  shippingAddressPage: ShippingAddressPage;
+  paymentDetailsPage: PaymentDetailsPage;
+  orderPreviewPage: OrderPreviewPage;
+  orderConfirmationPage: OrderConfirmationPage;
   accountWorkflow: AccountWorkflow;
   credentials: { email: string; password: string };
 };
@@ -39,8 +45,17 @@ export const test = base.extend<Fixtures>({
   basketAPI: async ({ request }, use) => {
     await use(new BasketAPI(request));
   },
-  checkoutPage: async ({ page }, use) => {
-    await use(new CheckoutPage(page));
+  shippingAddressPage: async ({ page }, use) => {
+    await use(new ShippingAddressPage(page));
+  },
+  paymentDetailsPage: async ({ page }, use) => {
+    await use(new PaymentDetailsPage(page));
+  },
+  orderPreviewPage: async ({ page }, use) => {
+    await use(new OrderPreviewPage(page));
+  },
+  orderConfirmationPage: async ({ page }, use) => {
+    await use(new OrderConfirmationPage(page));
   },
   accountWorkflow: async ({ accountPage, loginPage, page }, use) => {
     await use(new AccountWorkflow(accountPage, loginPage, page));

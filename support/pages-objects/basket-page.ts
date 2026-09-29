@@ -37,6 +37,12 @@ export class BasketPage {
     await this.page.getByRole('link', { name: /View basket|Voir le panier/ }).click();
   }
 
+  async proceedToCheckout() {
+    await this.page
+      .getByRole('link', { name: /Proceed to checkout|Procéder au paiement/ })
+      .click();
+  }
+
   async expectBasketContents(productName: string) {
     await expect(this.page.locator('#default')).toContainText(/Basket|Panier/);
     await expect(this.page.locator('#basket_formset')).toContainText(productName);
