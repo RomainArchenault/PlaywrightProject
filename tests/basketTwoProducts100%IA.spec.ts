@@ -4,6 +4,7 @@ test('ajouter deux produits différents dont un en double', async ({
   accountWorkflow,
   basketAPI,
   basketPage,
+  checkoutPage,
   credentials,
   productPage,
 }) => {
@@ -21,6 +22,14 @@ test('ajouter deux produits différents dont un en double', async ({
     await basketPage.openFromHeader();
     await basketPage.expectBasketContents('Snow Crash');
     await basketPage.expectBasketContents('Neuromancer.');
+
+    await checkoutPage.startCheckout();
+    await checkoutPage.completeShippingAddress();
+    await checkoutPage.continueToOrderPreview();
+    await checkoutPage.placeOrder();
+    await checkoutPage.printOrderAndVerifyDetails();
+    await checkoutPage.returnToShopping();
+    await productPage.expectProductsVisible();
   } finally {
     await basketAPI.clearBasket(credentials.email, credentials.password);
   }
